@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ndbx formatVersion="20" type="file" uuid="252689cb-e883-4048-97ba-2e931fb3b98b">
+    <property name="canvasHeight" value="1000"/>
+    <property name="canvasWidth" value="1500"/>
+    <property name="canvasX" value="0"/>
+    <property name="canvasY" value="0"/>
+    <node name="root" prototype="core.network" renderedChild="center">
+        <node name="center" position="38.00,25.00" prototype="corevector.translate">
+            <port name="translate" type="point" value="-300.00,-150.00"/>
+        </node>
+        <node name="comp_bar" position="38.00,19.00" prototype="core.network" renderedChild="life_bar">
+            <node name="comp_data" position="23.00,-8.00" prototype="list.combine"/>
+            <node name="life_bar" position="23.00,0.00" prototype="corevector.rect">
+                <port name="height" type="float" value="18.0"/>
+            </node>
+            <node name="life_span" position="23.00,-4.00" prototype="math.subtract"/>
+            <node name="lookup_birth" position="20.00,-6.00" prototype="data.lookup">
+                <port name="key" type="string" value="BIRTH"/>
+            </node>
+            <node name="lookup_death" position="25.00,-6.00" prototype="data.lookup">
+                <port name="key" type="string" value="DEATH"/>
+            </node>
+            <node name="scale_span" position="23.00,-2.00" prototype="math.multiply"/>
+            <port childReference="comp_data.list1" description="The first list." label="" name="composer data" range="list" type="list" widget="none"/>
+            <port childReference="life_bar.height" description="The height of the rectangle." label="" name="bar_height" range="value" type="float" value="18.0" widget="float"/>
+            <port childReference="scale_span.value1" description="" label="" name="scaling_factor" range="value" type="float" value="0.0" widget="float"/>
+            <conn input="life_span.value1" output="lookup_death"/>
+            <conn input="life_bar.width" output="scale_span"/>
+            <conn input="lookup_death.list" output="comp_data"/>
+            <conn input="life_span.value2" output="lookup_birth"/>
+            <conn input="lookup_birth.list" output="comp_data"/>
+            <conn input="scale_span.value2" output="life_span"/>
+        </node>
+        <node name="comp_data" position="-29.00,-1.00" prototype="list.combine"/>
+        <node name="comp_data1" position="-33.00,-1.00" prototype="list.combine"/>
+        <node name="comp_label" position="33.00,19.00" prototype="core.network" renderedChild="write_name">
+            <node name="comp_data" position="23.00,-7.00" prototype="list.combine"/>
+            <node name="dates" position="26.00,1.00" prototype="string.concatenate">
+                <port name="string2" type="string" value=" - "/>
+            </node>
+            <node name="format_birth" position="23.00,-1.00" prototype="string.format_number"/>
+            <node name="format_date" position="26.00,-3.00" prototype="string.string">
+                <port name="value" type="string" value="%.0f"/>
+            </node>
+            <node name="format_death" position="28.00,-1.00" prototype="string.format_number"/>
+            <node name="lookup_birth" position="23.00,-5.00" prototype="data.lookup">
+                <port name="key" type="string" value="BIRTH"/>
+            </node>
+            <node name="lookup_comp" position="18.00,-5.00" prototype="data.lookup">
+                <port name="key" type="string" value="COMPOSER"/>
+            </node>
+            <node name="lookup_death" position="28.00,-5.00" prototype="data.lookup">
+                <port name="key" type="string" value="DEATH"/>
+            </node>
+            <node name="name" position="23.00,3.00" prototype="string.concatenate">
+                <port name="string2" type="string" value=" ("/>
+                <port name="string4" type="string" value=")"/>
+            </node>
+            <node name="write_name" position="23.00,5.00" prototype="corevector.textpath">
+                <port name="font_name" type="string" value="MetroMediumLT-Two"/>
+                <port name="font_size" type="float" value="20.0"/>
+                <port name="align" type="string" value="RIGHT"/>
+            </node>
+            <port childReference="comp_data.list1" description="The first list." label="" name="list1" range="list" type="list" widget="none"/>
+            <conn input="name.string3" output="dates"/>
+            <conn input="write_name.text" output="name"/>
+            <conn input="dates.string1" output="format_birth"/>
+            <conn input="dates.string3" output="format_death"/>
+            <conn input="format_birth.format" output="format_date"/>
+            <conn input="format_death.format" output="format_date"/>
+            <conn input="name.string1" output="lookup_comp"/>
+            <conn input="lookup_comp.list" output="comp_data"/>
+            <conn input="format_birth.value" output="lookup_birth"/>
+            <conn input="lookup_birth.list" output="comp_data"/>
+            <conn input="format_death.value" output="lookup_death"/>
+            <conn input="lookup_death.list" output="comp_data"/>
+        </node>
+        <node name="comp_origin" position="43.00,19.00" prototype="core.network" renderedChild="make_point1">
+            <node name="comp_data" position="33.00,15.00" prototype="list.combine"/>
+            <node position="38.00,17.00" prototype="list.count"/>
+            <node name="evenly_points" position="43.00,25.00" prototype="corevector.resample">
+                <port name="method" type="string" value="amount"/>
+            </node>
+            <node name="height" position="41.00,15.00" prototype="math.number"/>
+            <node name="line_end_y" position="43.00,19.00" prototype="math.multiply"/>
+            <node name="lookup_birth" position="33.00,23.00" prototype="data.lookup">
+                <port name="key" type="string" value="BIRTH"/>
+            </node>
+            <node name="lookup_y" position="43.00,29.00" prototype="data.lookup">
+                <port name="key" type="string" value="y"/>
+            </node>
+            <node name="make_origin_y" position="43.00,27.00" prototype="corevector.point"/>
+            <node position="43.00,21.00" prototype="corevector.make_point"/>
+            <node name="make_point1" position="38.00,31.00" prototype="corevector.make_point"/>
+            <node name="min_birth" position="34.00,25.00" prototype="math.min"/>
+            <node name="offset" position="33.00,27.00" prototype="math.subtract"/>
+            <node name="scale" position="33.00,29.00" prototype="math.multiply"/>
+            <node name="spacing" position="45.00,15.00" prototype="math.number"/>
+            <node name="total_height" position="43.00,17.00" prototype="math.add"/>
+            <node name="vertical_line" position="43.00,23.00" prototype="corevector.line">
+                <port name="point2" type="point" value="0.00,300.00"/>
+            </node>
+            <port childReference="comp_data.list1" description="The first list." label="" name="composer_data" range="list" type="list" widget="none"/>
+            <port childReference="height.value" description="" label="" name="bar_height" range="value" type="float" value="0.0" widget="float"/>
+            <port childReference="spacing.value" description="" label="" name="bar_spacing" range="value" type="float" value="0.0" widget="float"/>
+            <port childReference="scale.value1" description="" label="" name="scaling_factor" range="value" type="float" value="0.0" widget="float"/>
+            <conn input="evenly_points.points" output="count"/>
+            <conn input="evenly_points.shape" output="vertical_line"/>
+            <conn input="count.list" output="comp_data"/>
+            <conn input="lookup_birth.list" output="comp_data"/>
+            <conn input="min_birth.values" output="lookup_birth"/>
+            <conn input="make_origin_y.value" output="evenly_points"/>
+            <conn input="lookup_y.list" output="make_origin_y"/>
+            <conn input="offset.value1" output="lookup_birth"/>
+            <conn input="offset.value2" output="min_birth"/>
+            <conn input="total_height.value1" output="height"/>
+            <conn input="total_height.value2" output="spacing"/>
+            <conn input="line_end_y.value2" output="total_height"/>
+            <conn input="line_end_y.value1" output="count"/>
+            <conn input="make_point.y" output="line_end_y"/>
+            <conn input="vertical_line.point2" output="make_point"/>
+            <conn input="make_point1.x" output="scale"/>
+            <conn input="make_point1.y" output="lookup_y"/>
+            <conn input="scale.value2" output="offset"/>
+        </node>
+        <node name="composers" position="33.00,13.00" prototype="data.import_csv">
+            <port name="file" type="string" value="Data.csv"/>
+            <port name="delimiter" type="string" value="semicolon"/>
+        </node>
+        <node name="fine_tuning" position="38.00,20.00" prototype="corevector.align">
+            <port name="position" type="point" value="10.00,-7.00"/>
+            <port name="halign" type="string" value="left"/>
+        </node>
+        <node name="height" position="37.00,14.00" prototype="math.number">
+            <port name="value" type="float" value="20.0"/>
+        </node>
+        <node name="lookup_birth" position="-33.00,1.00" prototype="data.lookup">
+            <port name="key" type="string" value="BIRTH"/>
+        </node>
+        <node name="lookup_birth1" position="-33.00,1.00" prototype="data.lookup">
+            <port name="key" type="string" value="BIRTH"/>
+        </node>
+        <node name="make_origin" position="-33.00,7.00" prototype="corevector.make_point"/>
+        <node name="make_origin1" position="-33.00,9.00" prototype="corevector.make_point"/>
+        <node name="min_date" position="-33.00,3.00" prototype="math.min"/>
+        <node name="min_date1" position="-32.00,3.00" prototype="math.min"/>
+        <node name="name_and_bar" position="35.00,22.00" prototype="list.combine"/>
+        <node name="position_h" position="38.00,24.00" prototype="corevector.translate">
+            <port name="translate" type="point" value="0.00,-150.00"/>
+        </node>
+        <node name="scale_bars" position="45.00,14.00" prototype="math.number">
+            <port name="value" type="float" value="5.0"/>
+        </node>
+        <node name="scale_origin" position="-33.00,5.00" prototype="math.multiply"/>
+        <node name="scale_origin1" position="-35.00,7.00" prototype="math.multiply"/>
+        <node name="set_origin" position="-29.00,3.00" prototype="math.subtract">
+            <port name="value2" type="float" value="1300.0"/>
+        </node>
+        <node name="set_origin1" position="-33.00,5.00" prototype="math.subtract">
+            <port name="value2" type="float" value="1300.0"/>
+        </node>
+        <node name="sort_by_birth" position="33.00,14.00" prototype="list.sort">
+            <port name="key" type="string" value="BIRTH"/>
+        </node>
+        <node name="spacing" position="41.00,14.00" prototype="math.number">
+            <port name="value" type="float" value="35.0"/>
+        </node>
+        <conn input="position_h.shape" output="name_and_bar"/>
+        <conn input="name_and_bar.list2" output="fine_tuning"/>
+        <conn input="sort_by_birth.list" output="composers"/>
+        <conn input="comp_label.list1" output="sort_by_birth"/>
+        <conn input="name_and_bar.list1" output="comp_label"/>
+        <conn input="fine_tuning.shape" output="comp_bar"/>
+        <conn input="set_origin.value2" output="min_date"/>
+        <conn input="scale_origin.value1" output="set_origin"/>
+        <conn input="make_origin.x" output="scale_origin"/>
+        <conn input="min_date.values" output="lookup_birth"/>
+        <conn input="set_origin.value1" output="lookup_birth"/>
+        <conn input="lookup_birth.list" output="comp_data"/>
+        <conn input="set_origin1.value2" output="min_date1"/>
+        <conn input="scale_origin1.value1" output="set_origin1"/>
+        <conn input="make_origin1.x" output="scale_origin1"/>
+        <conn input="min_date1.values" output="lookup_birth1"/>
+        <conn input="set_origin1.value1" output="lookup_birth1"/>
+        <conn input="lookup_birth1.list" output="comp_data1"/>
+        <conn input="center.shape" output="position_h"/>
+        <conn input="position_h.translate" output="comp_origin"/>
+        <conn input="comp_bar.composer data" output="sort_by_birth"/>
+        <conn input="comp_bar.bar_height" output="height"/>
+        <conn input="comp_bar.scaling_factor" output="scale_bars"/>
+        <conn input="comp_origin.composer_data" output="sort_by_birth"/>
+        <conn input="comp_origin.bar_height" output="height"/>
+        <conn input="comp_origin.bar_spacing" output="spacing"/>
+        <conn input="comp_origin.scaling_factor" output="scale_bars"/>
+    </node>
+</ndbx>
